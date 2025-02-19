@@ -1,6 +1,7 @@
 package com.sql.learning.dao;
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -11,6 +12,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	static final String INSERT_QUERY = "INSERT INTO EMPLOYEE(ID, NAME , GENDER , SALARY) VALUES(%d,'%s','%s',%d)";
 	static final String UPDATE_QUERY = "UPDATE EMPLOYEE SET NAME = '%s', GENDER = '%s' , SALARY = %d WHERE ID = %d";
 	static final String DELETE_QUERY = "DELETE FROM EMPLOYEE WHERE ID = %d";
+	static final String SELECT_QUERY = "SELECT * FROM EMPLOYEE";
+	static final String SELECT_BY_ID_QUERY = "SELECT * FROM EMPLOYEE WHERE ID = %d";
 
 	static {
 		try {
@@ -40,15 +43,27 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 
 	@Override
-	public void getAllEmployees() {
-		// TODO Auto-generated method stub
+	public void getAllEmployees() throws SQLException {
 
+		ResultSet rs = stmt.executeQuery(SELECT_QUERY);
+
+		while (rs.next()) {
+			System.out.println("Id = " + rs.getInt(1) + "\t Name = " + rs.getString(2) + "\t Gender = "
+					+ rs.getString(3) + "\t Salary = " + rs.getInt(4));
+		}
+		System.out.println(SELECT_QUERY);
 	}
 
 	@Override
-	public void getEmployeeById(int id) {
-		// TODO Auto-generated method stub
+	public void getEmployeeById(int id)throws SQLException  {
+		System.out.println(String.format(SELECT_BY_ID_QUERY, id));
+		ResultSet rs = stmt.executeQuery(String.format(SELECT_BY_ID_QUERY, id));
 
+		while (rs.next()) {
+			System.out.println("Id = " + rs.getInt(1) + "\t Name = " + rs.getString(2) + "\t Gender = "
+					+ rs.getString(3) + "\t Salary = " + rs.getInt(4));
+		}
+		
 	}
 
 }
